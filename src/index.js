@@ -3,6 +3,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ScreenHome from "./screens/home";
+import TOKEN_PAT from "./keyAuthenticator";
 
 const cache = new InMemoryCache()
 
@@ -10,8 +11,7 @@ const clientGitHub = new ApolloClient({
   uri: 'https://api.github.com/graphql',
   cache,
   defaultOptions: { watchQuery: { fetchPolicy: 'cache-and-network' } },
-  headers: { Authorization: 'Bearer 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'}
-  //credentials: 
+  headers: { Authorization: `Bearer ${TOKEN_PAT}`}
 })
 
 const Stack = createNativeStackNavigator();

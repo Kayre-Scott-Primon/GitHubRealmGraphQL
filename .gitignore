@@ -58,3 +58,6 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+#TOKEN_PAT
+src/keyAuthenticator.js
