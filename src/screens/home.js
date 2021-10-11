@@ -22,39 +22,56 @@ const QUERY = gql`
         }
      `
 
-     const Repo = {
-          name: 'repository',
-          properties: {
-               name: {
-                    type: 'string'
-               },
-               id: {
-                    type: 'string'
+const QUERYB = gql`
+     query {
+          viewer {
+            login
+            id
+            repositories(last: 5) {
+               nodes {
+                 name
+                 id
                }
+             }
+          }
+        }
+     `
+
+const Repo = {
+     name: 'repository',
+     properties: {
+          name: {
+               type: 'string'
+          },
+          id: {
+               type: 'string'
           }
      }
+}
 
-     const Schema = {
-          name: "GitHub",
-          properties: {
-            id: "string",
-            user: "string",
-            repo: {
-               type: 'list',
-               objectType: 'repository'
-            }
+const Schema = {
+     name: "GitHub",
+     properties: {
+          id: "string",
+          user: "string",
+          repo: {
+          type: 'list',
+          objectType: 'repository'
           }
      }
-
-     // deve-se ter apenas uma query, ou seja, tem que se buscar todos os arquivos que se queira apenas com uma query
-
-     // obrigatorio ter o loading, se tentar aceesar o objeto antes de finalizar ele crasha
-
-     // nao pode deixar o token no github, criar um arquivo com o nome de kayAuthenticator e exportar a TOKEN_TAP
+}
 
 export default function ScreenHome() {
 
      const { data, loading } = useQuery(QUERY)
+     const { data: datab, error, loading: loadingb } = useQuery(QUERYB)
+
+     useEffect(() => {
+          console.log('loadingb ' + loadingb)
+          if(!loadingb){
+               console.log('datab ' + JSON.stringify(datab))
+          }
+     },[loadingb])
 
      const saveRealm = async (data) => {
           const realm = await Realm.open({
