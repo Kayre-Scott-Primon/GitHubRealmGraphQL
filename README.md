@@ -51,3 +51,11 @@ no outro react-native run-android.
 uma atualização no repositorio mudando-se o titulo do mesmo para repoTeste12 e, sabendo entao onde e quanto foi feita a mudança na API, foi realizada essa chamada 
 com graphQL e atualizado o dado de forma exata no banco de dados Realm, e nao houve a necessidade de exvluir o objeto na tabela do Realm, apenas atualizar esse 
 atributo do mesmo.
+
+  Em relação ao codigo e suas confirgurações, para uma chamada de um query no grapghQL é obrigatoriamente que se respeite o parametro loading, uma vez que se a 
+DOM ou qualquer outro ponto do projeto tentar acessar os paramestros de retorno sem ter finalizado o processo da requisição, na maioria dos casos, irá acarretar em 
+uma quebra do seu aplicativo.
+
+  Quando se deseja realizar duas chamadas diferentes, porem lmebrando que isso deve ser na mesma API, é necessario que se crie uma nova query com os parametros que 
+se deseja, porem com o nome da mesma diferente da já existente no arquivo; feito isso, instancia-se um novo objeto com o useQuery e atribui-se diferentes nomes aos 
+campos de data, loading, error para que nao haja conflito, e assim é so utiliza-los.
