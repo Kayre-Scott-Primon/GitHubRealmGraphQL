@@ -4,7 +4,7 @@ import {
      Text,
      FlatList
 } from 'react-native'
-import { gql, useQuery } from '@apollo/client'
+import { gql, useQuery, useMutation } from '@apollo/client'
 import Realm  from "realm";
 
 const QUERY = gql`
@@ -36,6 +36,14 @@ const QUERYB = gql`
           }
         }
      `
+
+const ADDMutation = gql `
+     mutation addMutation($text: String!){
+          addName(text: $text){
+               name
+          }
+     }
+`
 
 const Repo = {
      name: 'repository',
@@ -139,12 +147,33 @@ export default function ScreenHome() {
           console.log('leitura depois: ' + JSON.stringify(readRealmA))
      }
 
+     async function apiMutation() {
+          /*
+          no explorador no navagador: 
+          mutation {
+               addStar(input:{
+               starrableId: "R_kgDOGLnhCQ"
+               }){
+               starrable {
+                    stargazers(first: 3) {
+                    nodes{
+                         name
+                    }
+                    }
+               }
+               }
+          }
+
+          */
+     }
+
      useEffect(() => {
           if(!loading){
                //saveRealm(data)
                readRealm()
                //deleteRealm()
                updateRealm(data)
+               apiMutation()
           }
      },[loading])
 
