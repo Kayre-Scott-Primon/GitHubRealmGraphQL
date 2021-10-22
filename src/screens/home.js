@@ -4,7 +4,7 @@ import {
      Text,
      FlatList
 } from 'react-native'
-import { gql, useQuery, useMutation } from '@apollo/client'
+import { gql, useQuery, useMutation} from '@apollo/client'
 import Realm  from "realm";
 
 const QUERY = gql`
@@ -38,9 +38,13 @@ const QUERYB = gql`
      `
 
 const ADDMutation = gql `
-     mutation addMutation($text: String!){
-          addName(text: $text){
-               name
+     mutation($name: String!) { 
+          createRepository(input:{name: $name , visibility:PUBLIC}) { 
+               clientMutationId,
+               repository {
+                    id,
+                    nameWithOwner
+               }
           }
      }
 `
@@ -73,6 +77,7 @@ export default function ScreenHome() {
 
      const { data, loading } = useQuery(QUERY)
      const { data: datab, error, loading: loadingb } = useQuery(QUERYB)
+     const [mutateFunction, {dataM, loadingM, errorM}] = useMutation(ADDMutation)
 
      useEffect(() => {
           console.log('loadingb ' + loadingb)
@@ -148,23 +153,11 @@ export default function ScreenHome() {
      }
 
      async function apiMutation() {
-          /*
-          no explorador no navagador: 
-          mutation {
-               addStar(input:{
-               starrableId: "R_kgDOGLnhCQ"
-               }){
-               starrable {
-                    stargazers(first: 3) {
-                    nodes{
-                         name
-                    }
-                    }
-               }
-               }
-          }
-
-          */
+          mutateFunction({variables: {
+               name: 'repoTestMutation'
+          }})
+          // documentar e criar repositorio
+          //https://docs.github.com/pt/graphql/guides/forming-calls-with-graphql
      }
 
      useEffect(() => {
@@ -172,7 +165,7 @@ export default function ScreenHome() {
                //saveRealm(data)
                readRealm()
                //deleteRealm()
-               updateRealm(data)
+               //updateRealm(data)
                apiMutation()
           }
      },[loading])
